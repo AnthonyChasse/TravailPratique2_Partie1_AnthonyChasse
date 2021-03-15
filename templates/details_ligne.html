@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <link href="../static/styles.css" rel="stylesheet">
+    <title>Anthony Chassé</title>
+</head>
+<body>
+<header>
+    <a href="{{ url_for('home') }}"><img src="../static/logo.png"></a>
+</header>
+<nav class="navbar navbar-light bg-light">
+    <form action="{{ url_for('recherche') }}" method="post">
+        <input type="text" name="keyword">
+        <input type="submit">
+    </form>
+    <a class="nav-item nav-link"></a>
+</nav>
+
+<main>
+    {% if not state.valid %}
+    <h1>Erreur</h1>
+    <h4>{{state.message}}</h4>
+    {% endif %}
+    {% if state.valid %}
+    <div>
+        {% if not state.has_image %}
+        <img src="https://picsum.photos/seed/{{state.ligne.productLine}}/250/250" class="float-right">
+        {% endif %}
+        {% if state.has_image %}
+        <img height="250" width="250" class="float-right" src="../static/uploads/{{state.ligne.productLine}}.png">
+        {% endif %}
+    </div>
+    <form enctype="multipart/form-data" action="/modifier-ligne" method="post">
+        <input type="hidden" name="p_nom" value="{{state.ligne.productLine}}">
+        <input type="file" name="image" class="float-right">
+        <h2><input type="text" name="nom" value="{{state.ligne.productLine}}"></h2>
+        <p><b>Description</b> : <textarea name="desc" cols="100" rows="5">{{state.ligne.textDescription}}</textarea></p>
+        <input type="submit" value="Appliquer">
+        <input type="submit" value="Créer une nouvelle ligne" formaction="/create-ligne" formmethod="post">
+    </form>
+    <div>
+        <p>Voici tout les produits dans cette catégorie</p>
+        <table class="table">
+            {% for row in products %}
+            <tr>
+                <td>{{row[0]}}</td>
+                <td><a href="{{ url_for('get_produit') }}?produit={{row[0]}}">Détail</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    {% endif %}
+</main>
+<footer>
+    <ul>
+        <li>Anthony Chassé</li>
+        <li>Tél : 321-123-5555</li>
+        <li>Québec Incorporated</li>
+    </ul>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
+        crossorigin="anonymous"></script>
+</body>
+</html>

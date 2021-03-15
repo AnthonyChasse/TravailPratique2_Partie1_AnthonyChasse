@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <link href="../static/styles.css" rel="stylesheet">
+    <title>Anthony Chassé</title>
+</head>
+<body>
+<header>
+    <a href="{{ url_for('home') }}"><img src="../static/logo.png"></a>
+</header>
+<nav class="navbar navbar-light bg-light">
+    <form action="{{ url_for('recherche') }}" method="post">
+        <input type="text" name="keyword">
+        <input type="submit">
+    </form>
+    <a class="nav-item nav-link"></a>
+</nav>
+<main>
+    {% if not state.valid %}
+    <h1>Erreur</h1>
+    <h4>{{state.message}}</h4>
+    {% endif %}
+    <div>
+        {% if not state.has_image %}
+        <img src="https://picsum.photos/seed/{{state.produit.productName}}/250/250" class="float-right">
+        {% endif %}
+        {% if state.has_image %}
+        <img src="../static/uploads/{{state.produit.productName}}.png" height="250" width="250" class="float-right">
+        {% endif %}
+    </div>
+    <form action="/modifier-produit" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="p_nom" value="{{state.produit.productName}}">
+        <p><input type="file" name="image" class="float-right"></p>
+        <h2>
+            <input type="text" name="nom" value="{{state.produit.productName}}"></h2>
+        <input type="submit" formmethod="post" formaction="/supprimer-produit" value="Supprimer le produit avec ce nom">
+        <p><b>Code</b> : <input type="text" name="code" value="{{state.produit.productCode}}"></p>
+        <p><b>Catégorie</b> : <input type="text" name="ligne" value="{{state.produit.productLine}}">
+            <b>Vendeur</b> : <input type="text" name="vendeur" value="{{state.produit.productVendor}}"></p>
+        <p><b>Description</b> : <textarea name="desc" cols="100"
+                                          rows="5">{{state.produit.productDescription}}</textarea></p>
+        <p><b>Échelle :</b> <input type="text" name="echelle" value="{{state.produit.productScale}}"></p>
+        <p>Quantité en stock : <input type="number" name="quant" value="{{state.produit.quantityInStock}}"></p>
+        <div>
+            <table class="table-bordered">
+                <tr>
+                    <th>Prix d'achat</th>
+                    <th>Prix de vente</th>
+                </tr>
+                <tr>
+                    <td><input type="number" name="msrp" value="{{state.produit.MSRP}}">$</td>
+                    <td><input type="number" name="buy_price" value="{{state.produit.buyPrice}}">$</td>
+                </tr>
+            </table>
+        </div>
+        <input value="Appliquer" type="submit">
+        <input value="Créer un nouveau produit" type="submit" formaction="/create-produit" formmethod="post">
+    </form>
+</main>
+<footer>
+    <ul>
+        <li>Anthony Chassé</li>
+        <li>Tél : 321-123-5555</li>
+        <li>Québec Incorporated</li>
+    </ul>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
+        crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+header
+{
+    background-color: black;
+    height:150px;
+}
+main
+{
+    padding:20px;
+    min-height: 500px;
+}
+nav
+{
+    height:5%;
+    padding:5px
+}
+footer
+{
+    background-color: black;
+    height:100px;
+    padding:15px;
+}
+footer ul li {
+    color: white;
+    display: inline;
+}
+.float-right
+{
+    float:right;
+}
+.deuxboutons
+{
+    display: flex;
+    flex-direction: row;
+}
